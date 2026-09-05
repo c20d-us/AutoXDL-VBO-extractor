@@ -43,16 +43,16 @@ is any directory containing a `runs/` subdirectory — and writes
 `<session>/vbo/<session>-<NN>.vbo`, one per run.
 
 ```
-BSCC 20260628:
-  BSCC 20260628-01.vbo: 1387 samples, 59.32 s, 23.36 Hz, lap 42.881 s
-  BSCC 20260628-02.vbo: 1379 samples, 59.08 s, 23.32 Hz, lap 40.255 s
+Event 20260628:
+  Event 20260628-01.vbo: 1387 samples, 59.32 s, 23.36 Hz, lap 42.881 s
+  Event 20260628-02.vbo: 1379 samples, 59.08 s, 23.32 Hz, lap 40.255 s
   ...
 ```
 
 Or name sessions explicitly, and look before you leap:
 
 ```bash
-python3 autox_vbo.py "BSCC 20260823" --dry-run
+python3 autox_vbo.py "Event 20260823" --dry-run
 ```
 
 ### Expected input
@@ -61,7 +61,7 @@ Exactly what the app produces — the script reads the full logs and ignores the
 app's pre-trimmed `_parsed.json` files:
 
 ```
-BSCC 20260823/
+Event 20260823/
   runs/
     run_001.json
     run_001_parsed.json     (ignored)
@@ -200,7 +200,7 @@ perpendicular to it: one gate in the sample data is crossed 15.7° oblique.
 is assumed to start when the log does. Nudge the offset in your overlay tool
 and everything before the start line comes with it.
 
-Each run's video resolves to `<session>_<run number>.mp4` — `BSCC 20260823_0004.mp4`
+Each run's video resolves to `<session>_<run number>.mp4` — `Event 20260823_0004.mp4`
 for run 4 — so all of a session's clips can live in one folder.
 
 ---
