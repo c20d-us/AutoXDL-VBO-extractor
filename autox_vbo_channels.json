@@ -1,0 +1,45 @@
+{
+  "_readme": [
+    "Output columns for autox_vbo.py, in the order they appear in the .vbo file.",
+    "Each column needs: name (for [header]), short (for [column names]) and",
+    "format (a Python format spec), plus exactly one source:",
+    "  key      - read this channel straight from the run JSON, optionally",
+    "             through scale/offset (value * scale + offset)",
+    "  derived  - computed by the script; see the list below",
+    "  constant - the same value on every row",
+    "Optional: unit (adds a [channel units] entry), and required:false to drop",
+    "the column from runs whose log does not carry that key.",
+    "Derived sources: time, sats, latitude_min, longitude_min, heading,",
+    "run_index, avisynctime, elapsed.",
+    "Run 'python3 autox_vbo.py --list-channels' to see the active table.",
+    "Fields beginning with _ are ignored."
+  ],
+
+  "columns": [
+    {"name": "satellites",    "short": "sats",         "derived": "sats",          "format": "03d"},
+    {"name": "time",          "short": "time",         "derived": "time",          "format": ">10"},
+    {"name": "latitude",      "short": "lat",          "derived": "latitude_min",  "format": "+.8f"},
+    {"name": "longitude",     "short": "long",         "derived": "longitude_min", "format": "+.8f"},
+    {"name": "velocity kmh",  "short": "velocity",     "key": "speed", "scale": 3.6, "format": "07.3f"},
+    {"name": "heading",       "short": "heading",      "derived": "heading",       "format": "06.2f"},
+    {"name": "height",        "short": "height",       "constant": 0.0,            "format": "+09.2f"},
+    {"name": "LongitudinalG", "short": "longG",        "key": "gForceX",           "format": "+.2f"},
+    {"name": "LateralG",      "short": "latG",         "key": "gForceY",           "format": "+.2f"},
+    {"name": "avifileindex",  "short": "avifileindex", "derived": "run_index",     "format": "04d"},
+    {"name": "avisynctime",   "short": "avitime",      "derived": "avisynctime",   "format": "09d"},
+
+    {"_comment": "OBD-II examples. The key names below are GUESSES and will not match until corrected against a real log that contains them. required:false means each stays out of the file until its key appears, so these are inert today.",
+     "name": "rpm",           "short": "rpm",          "key": "rpm",               "format": "05d",    "unit": "rpm",  "required": false},
+    {"name": "throttle",      "short": "throttle",     "key": "throttlePosition",  "format": "05.1f",  "unit": "%",    "required": false},
+    {"name": "coolant temp",  "short": "coolant",      "key": "coolantTemp",       "format": "+05.1f", "unit": "C",    "required": false}
+  ],
+
+  "_also_available": [
+    "The app already logs 'distance' (metres travelled). To write it, add:",
+    "{\"name\": \"distance\", \"short\": \"distance\", \"key\": \"distance\",",
+    " \"format\": \"010.3f\", \"unit\": \"m\"}",
+    "Note that a key which IS present in the log will produce a column even",
+    "with required:false -- that flag only governs what happens when the key",
+    "is absent."
+  ]
+}
